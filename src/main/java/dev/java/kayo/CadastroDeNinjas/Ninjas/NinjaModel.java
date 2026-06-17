@@ -17,13 +17,16 @@ public class NinjaModel {
 //  Faz o java controlar pra mim com o ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
     private Long id;
 
+    @Column(name = "Nome")
     private String nome;
 
     @Column(unique = true)
     private String email;
 
+    @Column(name = "Idade")
     private int idade;
 
 //   @ManyToOne - Um ninja pode ter somente uma unica missao
