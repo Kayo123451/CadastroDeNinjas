@@ -2,34 +2,47 @@ package dev.java.kayo.CadastroDeNinjas.Missoes;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("missoes")
 public class MissoesController {
 
-//    GET -- Mandar uma requisição para mostrar as missoes
+
+    private MissoesService missoesService;
+
+    public  MissoesController(MissoesService missoesService){
+        this.missoesService = missoesService;
+    }
+
+
+//    GET -- Mostrar as missoes
     @GetMapping("/listar")
-    public String listarMissao(){
-        return "lista de missoes";
+    public List<MissoesModel > listarMissoes(){
+        return missoesService.listarMissoes();
     }
 
-//    Post -- Mandar uma requisição para criar as missoes
-    @PostMapping("/criar")
-    public String criarMissao(){
-        return "Missao criada";
+//    Post -- Criar missao
+    @PostMapping("/criarMissoes")
+    public MissoesModel criarMissao(@RequestBody MissoesModel missoes){
+        return  missoesService.criarMissoes(missoes);
     }
 
-//    Put -- Mandar uma requisição para alterar as missoes
+//    Put -- Atualizar missao
 
-    @PutMapping("/alterar")
-    public String alterarMissao(){
-        return "Missao alterada";
-    }
-
-//    Delete -- Mandar uma requisição para deletar as missoes
-    @DeleteMapping("/deletar")
-    public String deletarMissao(){
-        return "Missao deletada";
+    @PutMapping("/atualizar/{id}")
+    public MissoesModel alterarMissao(@PathVariable Long id, @RequestBody MissoesModel missoes){
+       return missoesService.atualizarMissoes(id, missoes);
     }
 
 
+// DELETE -- Deletar missoes
+@DeleteMapping("/deletar/{id}")
+    public MissoesModel deletarMissao(@PathVariable Long id){
+        if (missoesService.listarNinjaID(id) != null){
+            missoesService.deletarMissoes(id);
+        }
+        return null;
+    }
 }
+
