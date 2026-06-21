@@ -51,8 +51,9 @@ public NinjaModel listarNinjaID(@PathVariable Long id){
 //    Deletar Ninja  (DELETE)
 
     @DeleteMapping("/deletar/{id}")
-    public NinjaModel deleteNinja(@PathVariable Long id){
-        return ninjaService.deleteNinja(id);
+    public void deletarNinjaID(@PathVariable Long id){
+        ninjaService.deletarNinjaId(id);
+
     }
 
 

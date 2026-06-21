@@ -36,11 +36,11 @@ public class NinjaService {
 
 //    Deletar um ninja
 
-    public NinjaModel deleteNinja(Long id){
-        Optional<NinjaModel> ninjaID = ninjaRepository.findById(id);
-    ninjaRepository.deleteById(id);
-    return ninjaID.orElse(null);
+    public void deletarNinjaId(Long id){
+        ninjaRepository.deleteById(id);
     }
+
+}
 
 //    Alterar um ninja
 
