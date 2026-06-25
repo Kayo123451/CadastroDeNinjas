@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 //Entity transforma a classe em uma entidade do banco de dados
 @Entity
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "missoes")
 public class NinjaModel {
 
 //  Faz o java controlar pra mim com o ID
