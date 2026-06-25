@@ -1,5 +1,8 @@
 package dev.java.kayo.CadastroDeNinjas.Missoes;
 
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
 public class MissoesController {
 
 
-    private MissoesService missoesService;
+    private final MissoesService missoesService;
 
     public  MissoesController(MissoesService missoesService){
         this.missoesService = missoesService;
@@ -18,31 +21,39 @@ public class MissoesController {
 
 //    GET -- Mostrar as missoes
     @GetMapping("/listar")
-    public List<MissoesModel > listarMissoes(){
-        return missoesService.listarMissoes();
+    public ResponseEntity<List<MissoesDTO>> listarMissoes(){
+        List<MissoesDTO> listaMissoes = missoesService.listarMissoes();
+        return ResponseEntity.ok(listaMissoes);
     }
 
 //    Post -- Criar missao
     @PostMapping("/criarMissoes")
-    public MissoesModel criarMissao(@RequestBody MissoesModel missoes){
-        return  missoesService.criarMissoes(missoes);
+    public ResponseEntity<?> criarMissao(@RequestBody MissoesDTO missoes){
+        MissoesDTO missaoNova = missoesService.criarMissoes(missoes);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Missao criada com sucesso!");
     }
 
 //    Put -- Atualizar missao
 
     @PutMapping("/atualizar/{id}")
-    public MissoesModel alterarMissao(@PathVariable Long id, @RequestBody MissoesModel missoes){
-       return missoesService.atualizarMissoes(id, missoes);
+    public ResponseEntity<?> alterarMissao(@PathVariable Long id, @RequestBody MissoesDTO missoes) {
+        MissoesDTO missao = missoesService.atualizarMissoes(id, missoes);
+        if (missao != null) {
+            return ResponseEntity.ok(missao);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Missao não encontrada!");
+        }
     }
 
 
 // DELETE -- Deletar missoes
 @DeleteMapping("/deletar/{id}")
-    public MissoesModel deletarMissao(@PathVariable Long id){
+    public ResponseEntity<?> deletarMissao(@PathVariable Long id){
         if (missoesService.listarNinjaID(id) != null){
             missoesService.deletarMissoes(id);
+            return ResponseEntity.ok("Missao deletada com sucesso!");
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Missao não encontrada!");
     }
 }
 
